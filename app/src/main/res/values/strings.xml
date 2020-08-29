@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Leaderboard</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="tab_title_1">Learnig Leaders</string>
+    <string name="tab_title_2">Skill IQ Leaders</string>
+    <string name="learning_hours">learning hours</string>
+    <string name="skill_iq_score">skill IQ score</string>
+</resources>

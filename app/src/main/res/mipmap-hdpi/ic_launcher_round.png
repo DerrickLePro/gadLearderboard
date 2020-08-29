@@ -1,0 +1,134 @@
+/*
+ * Copyright (C) 2017 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.android.server.locksettings.recoverablekeystore;
+
+import static android.security.keystore.recovery.KeyChainProtectionParams.TYPE_LOCKSCREEN;
+
+import android.annotation.Nullable;
+import android.content.Context;
+import android.os.RemoteException;
+import android.security.Scrypt;
+import android.security.keystore.recovery.KeyChainProtectionParams;
+import android.security.keystore.recovery.KeyChainSnapshot;
+import android.security.keystore.recovery.KeyDerivationParams;
+import android.security.keystore.recovery.WrappedApplicationKey;
+import android.util.Log;
+import android.util.Pair;
+
+import com.android.internal.annotations.VisibleForTesting;
+import com.android.internal.util.ArrayUtils;
+import com.android.internal.widget.LockPatternUtils;
+import com.android.server.locksettings.recoverablekeystore.storage.RecoverableKeyStoreDb;
+import com.android.server.locksettings.recoverablekeystore.storage.RecoverySnapshotStorage;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.security.GeneralSecurityException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.SecureRandom;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertPath;
+import java.security.cert.CertificateException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+
+/**
+ * Task to sync application keys to a remote vault service.
+ *
+ * @hide
+ */
+public class KeySyncTask implements Runnable {
+    private static final String TAG = "KeySyncTask";
+
+    private static final String RECOVERY_KEY_ALGORITHM = "AES";
+    private static final int RECOVERY_KEY_SIZE_BITS = 256;
+    private static final int SALT_LENGTH_BYTES = 16;
+    private static final int LENGTH_PREFIX_BYTES = Integer.BYTES;
+    private static final String LOCK_SCREEN_HASH_ALGORITHM = "SHA-256";
+    private static final int TRUSTED_HARDWARE_MAX_ATTEMPTS = 10;
+
+    @VisibleForTesting
+    static final int SCRYPT_PARAM_N = 4096;
+    @VisibleForTesting
+    static final int SCRYPT_PARAM_R = 8;
+    @VisibleForTesting
+    static final int SCRYPT_PARAM_P = 1;
+    @VisibleForTesting
+    static final int SCRYPT_PARAM_OUTLEN_BYTES = 32;
+
+    private final RecoverableKeyStoreDb mRecoverableKeyStoreDb;
+    private final int mUserId;
+    private final int mCredentialType;
+    private final byte[] mCredential;
+    private final boolean mCredentialUpdated;
+    private final PlatformKeyManager mPlatformKeyManager;
+    private final RecoverySnapshotStorage mRecoverySnapshotStorage;
+    private final RecoverySnapshotListenersStorage mSnapshotListenersStorage;
+    private final TestOnlyInsecureCertificateHelper mTestOnlyInsecureCertificateHelper;
+    private final Scrypt mScrypt;
+
+    public static KeySyncTask newInstance(
+            Context context,
+            RecoverableKeyStoreDb recoverableKeyStoreDb,
+            RecoverySnapshotStorage snapshotStorage,
+            RecoverySnapshotListenersStorage recoverySnapshotListenersStorage,
+            int userId,
+            int credentialType,
+            byte[] credential,
+            boolean credentialUpdated
+    ) throws NoSuchAlgorithmException, KeyStoreException, InsecureUserException {
+        return new KeySyncTask(
+                recoverableKeyStoreDb,
+                snapshotStorage,
+                recoverySnapshotListenersStorage,
+                userId,
+                credentialType,
+                credential,
+                credentialUpdated,
+                PlatformKeyManager.getInstance(context, recoverableKeyStoreDb),
+                new TestOnlyInsecureCertificateHelper(),
+                new Scrypt());
+    }
+
+    /**
+     * A new task.
+     *
+     * @param recoverableKeyStoreDb Database where the keys are stored.
+     * @param userId The uid of the user whose profile has been unlocked.
+     * @param credentialType The type of credential as defined in {@code LockPatternUtils}
+     * @param credential The credential, encoded as a {@link String}.
+     * @param credentialUpdated signals weather credentials were updated.
+     * @param platformKeyManager platform key manager
+     * @param testOnlyInsecureCertificateHelper utility class used for end-to-end tests
+     */
+    @VisibleForTesting
+    KeySyncTask(
+            RecoverableKeyStoreDb recoverableKeyStoreDb,
+            RecoverySnapshotStorage snapshotStorage,
+            
