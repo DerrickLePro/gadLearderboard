@@ -8,6 +8,7 @@
     tools:context=".SubmitActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#000000"
@@ -21,17 +22,35 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/btn_back"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginTop="5dp"
-                    app:srcCompat="@drawable/ic_gads_logo" />
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/ic_baseline_keyboard_backspace_24" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        app:srcCompat="@drawable/ic_gads_logo" />
+
+
+                </LinearLayout>
 
 
             </LinearLayout>
@@ -51,18 +70,98 @@
                     android:text="@string/text_project_submission"
                     android:textAppearance="@android:style/TextAppearance.Material.Large"
                     android:textColor="@color/colorAccent" />
-        <View
-            android:id="@+id/divider2"
-            android:layout_marginTop="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"
-            android:background="@drawable/shape_separator"/>
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/shape_separator" />
             </LinearLayout>
 
         </LinearLayout>
 
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    <EditText
+        android:id="@+id/editTextFistName"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/shape_input"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:padding="5dp"
+        android:hint="@string/text_first_name"
+        app:layout_constraintEnd_toStartOf="@+id/editTextLastName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+
+    <EditText
+        android:id="@+id/editTextLastName"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/shape_input"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:padding="5dp"
+        android:hint="@string/text_last_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editTextFistName"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="75dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/shape_input"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:padding="5dp"
+        android:hint="@string/text_email_address"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextFistName" />
+
+    <EditText
+        android:id="@+id/editTextProjectLink"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="75dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/shape_input"
+        android:ems="10"
+        android:inputType="textUri"
+        android:padding="5dp"
+        android:hint="@string/text_project_on_github_link"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/shape_submit_gradient"
+        android:minHeight="30dp"
+        android:text="@string/btn_submit"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextProjectLink" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
