@@ -5,4 +5,8 @@
     <string name="tab_title_2">Skill IQ Leaders</string>
     <string name="learning_hours">learning hours</string>
     <string name="skill_iq_score">skill IQ score</string>
+    <string name="btn_submit">Submit</string>
+    <string name="tab_learnig_leaders">Learnig Leaders</string>
+    <string name="tab_skilliq_leaders">Skill IQ Leaders</string>
+    <string name="text_project_submission">Project Submission</string>
 </resources>
