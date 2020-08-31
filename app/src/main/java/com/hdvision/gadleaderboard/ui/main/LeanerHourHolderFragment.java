@@ -1,6 +1,8 @@
 package com.hdvision.gadleaderboard.ui.main;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +14,14 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.hdvision.gadleaderboard.R;
 import com.hdvision.gadleaderboard.model.Learner;
 import com.hdvision.gadleaderboard.utils.LearnerRecycleAdapter;
 
 import java.util.List;
+import java.util.concurrent.Executor;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -28,9 +32,14 @@ public class LeanerHourHolderFragment extends Fragment {
 
     private LearnerViewModel mLearnerViewModel;
 
+
     private RecyclerView mRecyclerView;
     private LearnerRecycleAdapter mAdapter;
 
+    private SwipeRefreshLayout mRefreshLayout;
+    private final static int DATA_FETCHING_INTERVAL = 5 * 1000; //
+    private long mLastFetchedDataTimeStamp;
+    private AsyncTask<Void, Void, Void> mTaskRefresh;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +56,20 @@ public class LeanerHourHolderFragment extends Fragment {
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
         mRecyclerView = root.findViewById(R.id.list_items);
+        mRefreshLayout = root.findViewById(R.id.swipeToRefresh);
+
+        mTaskRefresh = new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                mRefreshLayout.setOnRefreshListener(() -> {
+
+                    mLearnerViewModel.fetchData();
+                    mRefreshLayout.setRefreshing(false);
+
+                });
+                return null;
+            }
+        };
 
         Observer<List<Learner>> hoursDataObserver = this::updateData;
         Observer<String> errorObserver = this::setError;
@@ -65,6 +88,7 @@ public class LeanerHourHolderFragment extends Fragment {
 
     public void updateData(List<Learner> data) {
         mAdapter.setItems(data);
+        mLastFetchedDataTimeStamp = System.currentTimeMillis();
     }
 
 
@@ -76,4 +100,15 @@ public class LeanerHourHolderFragment extends Fragment {
         Toast.makeText(this.getContext(), "Error:" + error, Toast.LENGTH_LONG).show();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mTaskRefresh.execute();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mTaskRefresh.cancel(true);
+    }
 }

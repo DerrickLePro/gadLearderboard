@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">Leaderboard</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="tab_title_1">Learnig Leaders</string>
+    <string name="tab_title_1">Learning Leaders</string>
     <string name="tab_title_2">Skill IQ Leaders</string>
     <string name="learning_hours">learning hours</string>
     <string name="skill_iq_score">skill IQ score</string>
     <string name="btn_submit">Submit</string>
-    <string name="tab_learnig_leaders">Learnig Leaders</string>
+    <string name="tab_learnig_leaders">Learning Leaders</string>
     <string name="tab_skilliq_leaders">Skill IQ Leaders</string>
     <string name="text_project_submission">Project Submission</string>
     <string name="text_first_name">First Name</string>
