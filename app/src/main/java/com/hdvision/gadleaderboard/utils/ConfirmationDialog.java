@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -38,7 +37,6 @@ public class ConfirmationDialog extends DialogFragment {
     private FragmentManager mFragmentManager;
 
     public ConfirmationDialog(FragmentManager supportFragmentManager) {
-
         mFragmentManager = supportFragmentManager;
     }
 
@@ -70,6 +68,7 @@ public class ConfirmationDialog extends DialogFragment {
                     .build();
 
             ApiService service = retrofit.create(ApiService.class);
+            Log.d(TAG, "onCreateView: " + mBean.toString());
             //Todo:: for test
             mBean = new SubmitBean();
             Call<ResponseBody> call = service.submitProject(mBean.getFirstName(), mBean.getLastName(), mBean.getBusinessEmail(), mBean.getProjectLink());
@@ -78,9 +77,10 @@ public class ConfirmationDialog extends DialogFragment {
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Log.d(TAG, "onResponse: response: " + response.message());
                     SuccessDialog dialog = new SuccessDialog();
-                    dialog.show(getActivity().getSupportFragmentManager(), getString(R.string.dialog_success));
+                    dialog.show(mFragmentManager, getString(R.string.dialog_success));
                     dismiss();
                 }
+
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
@@ -89,7 +89,7 @@ public class ConfirmationDialog extends DialogFragment {
                     try {
                         dialog.show(mFragmentManager, getString(R.string.dialog_warning_submit));
                         dismiss();
-                    }catch (IllegalStateException e){
+                    } catch (IllegalStateException e) {
                         Log.d(TAG, "onFailure: error ConfirmationDialog not attached to a context");
                     }
 

@@ -1,6 +1,7 @@
 package com.hdvision.gadleaderboard;
 
 import android.os.Bundle;
+import android.service.autofill.RegexValidator;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.hdvision.gadleaderboard.model.SubmitBean;
 import com.hdvision.gadleaderboard.utils.ConfirmationDialog;
 import com.hdvision.gadleaderboard.utils.TextValidator;
+
+import java.util.regex.Pattern;
 
 public class SubmitActivity extends AppCompatActivity {
 
@@ -81,7 +84,25 @@ public class SubmitActivity extends AppCompatActivity {
         bean.setBusinessEmail(email);
         bean.setProjectLink(projectLink);
 
-
+        if (bean.getFirstName().isEmpty()){
+            Toast.makeText(SubmitActivity.this, "First name required", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (bean.getLastName().isEmpty()){
+            Toast.makeText(SubmitActivity.this, "Last name required", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (bean.getBusinessEmail().isEmpty()){
+            Toast.makeText(SubmitActivity.this, "Email required", Toast.LENGTH_LONG).show();
+            return;
+        }else if (!isValidEmail(bean.getBusinessEmail())){
+            Toast.makeText(SubmitActivity.this, "Email address no valid", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (bean.getProjectLink().isEmpty()){
+            Toast.makeText(SubmitActivity.this, "Project link required", Toast.LENGTH_LONG).show();
+            return;
+        }
         ConfirmationDialog dialog = new ConfirmationDialog(getSupportFragmentManager());
         Bundle args = new Bundle();
         args.putParcelable(getString(R.string.field_bean), bean);
@@ -90,6 +111,11 @@ public class SubmitActivity extends AppCompatActivity {
 
         Log.d(TAG, bean.toString());
 
+    }
+
+    private boolean isValidEmail(String email) {
+        Pattern validator = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+        return validator.matcher(email).find();
     }
 
 
