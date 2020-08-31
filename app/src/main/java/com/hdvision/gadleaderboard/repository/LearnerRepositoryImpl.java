@@ -32,23 +32,17 @@ public class LearnerRepositoryImpl implements LearnerRepository {
         mRemoteDataSource = remoteDataSource;
 
         mDataLearnerHoursMerger.addSource(this.mRemoteDataSource.getDataStreamLeanerHours(), entities ->
-                mExecutor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d(TAG, "list Learner Hours");
-                        List<Learner> list = entities;
-                        mDataLearnerHoursMerger.postValue(list);
-                    }
+                mExecutor.execute(() -> {
+                    Log.d(TAG, "list Learner Hours");
+                    List<Learner> list = entities;
+                    mDataLearnerHoursMerger.postValue(list);
                 })
         );
-        mDataLearnerSkillIQMerger.addSource(this.mRemoteDataSource.getDataStreamLeanerHours(), entities ->
-                mExecutor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d(TAG, "list Learner Hours");
-                        List<Learner> list = entities;
-                        mDataLearnerSkillIQMerger.postValue(list);
-                    }
+        mDataLearnerSkillIQMerger.addSource(this.mRemoteDataSource.getDataStreamLeanerSkillIQ(), entities ->
+                mExecutor.execute(() -> {
+                    Log.d(TAG, "list Learner Hours");
+                    List<Learner> list = entities;
+                    mDataLearnerSkillIQMerger.postValue(list);
                 })
         );
 
@@ -81,6 +75,10 @@ public class LearnerRepositoryImpl implements LearnerRepository {
     @Override
     public void fetchData() {
         mRemoteDataSource.fetchDataLearnerHours();
+    }
+
+    @Override
+    public void fetchDataSkill() {
         mRemoteDataSource.fetchDataLearnerSkillIQ();
     }
 

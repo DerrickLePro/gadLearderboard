@@ -1,5 +1,7 @@
 package com.hdvision.gadleaderboard.model;
 
+import android.content.Intent;
+
 import com.hdvision.gadleaderboard.R;
 
 /**
@@ -9,15 +11,15 @@ import com.hdvision.gadleaderboard.R;
 public class Learner {
 
     private String name;
-    private int hours;
-    private int score;
+    private Integer hours;
+    private Integer score;
     private String country;
     private String badgeUrl;
 
     public Learner() {
     }
 
-    public Learner(String name, int hours, int score, String country, String badgeUrl) {
+    public Learner(String name, Integer hours, Integer score, String country, String badgeUrl) {
         this.name = name;
         this.hours = hours;
         this.score = score;
@@ -33,19 +35,19 @@ public class Learner {
         this.name = name;
     }
 
-    public int getHours() {
+    public Integer getHours() {
         return hours;
     }
 
-    public void setHours(int hours) {
+    public void setHours(Integer hours) {
         this.hours = hours;
     }
 
-    public int getScore() {
+    public Integer getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(Integer score) {
         this.score = score;
     }
 

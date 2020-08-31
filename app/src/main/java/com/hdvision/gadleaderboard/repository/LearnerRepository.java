@@ -19,4 +19,6 @@ public interface LearnerRepository {
     LiveData<String> getErrorStream();
 
     void fetchData();
+
+    void fetchDataSkill();
 }

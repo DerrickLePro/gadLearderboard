@@ -21,14 +21,14 @@ import java.util.List;
  * Created by derrick.kaffo on 29/08/2020.
  * kaffoderrick@gmail.com
  */
-public class LearnerRecycleAdapter extends RecyclerView.Adapter<LearnerRecycleAdapter.ViewHolder> {
+public class LearnerSkillIQRecycleAdapter extends RecyclerView.Adapter<LearnerSkillIQRecycleAdapter.ViewHolder> {
+
 
     List<Learner> mItems = new ArrayList<>();
     private final Context mContext;
     private final LayoutInflater mLayoutInflater;
 
-    public LearnerRecycleAdapter(Context context) {
-
+    public LearnerSkillIQRecycleAdapter(Context context) {
         mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
     }
@@ -44,7 +44,7 @@ public class LearnerRecycleAdapter extends RecyclerView.Adapter<LearnerRecycleAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Learner learner = mItems.get(position);
 
-        String description = learner.getHours() + " " + mContext.getString(R.string.learning_hours) + ", " + learner.getCountry();
+        String description =  learner.getScore() + " " + mContext.getString(R.string.skill_iq_score) + ", " + learner.getCountry();
 
         holder.mTextName.setText(learner.getName());
         holder.mTextDescription.setText(description);

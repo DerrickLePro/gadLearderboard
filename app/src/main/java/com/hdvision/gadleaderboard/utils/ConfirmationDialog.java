@@ -7,9 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.hdvision.gadleaderboard.R;
 import com.hdvision.gadleaderboard.model.SubmitBean;
@@ -33,6 +35,12 @@ public class ConfirmationDialog extends DialogFragment {
     private Button mConfirm;
     private SubmitBean mBean;
     private ImageView mClose;
+    private FragmentManager mFragmentManager;
+
+    public ConfirmationDialog(FragmentManager supportFragmentManager) {
+
+        mFragmentManager = supportFragmentManager;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +50,7 @@ public class ConfirmationDialog extends DialogFragment {
         if (mBean != null) {
             Log.d(TAG, "onCreate: submit bean: " + mBean);
         }
+
     }
 
     @Nullable
@@ -67,8 +76,9 @@ public class ConfirmationDialog extends DialogFragment {
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    Log.d(TAG, "onResponse: response: " + response.message());
                     SuccessDialog dialog = new SuccessDialog();
-                    dialog.show(getParentFragmentManager(), getString(R.string.dialog_success));
+                    dialog.show(getActivity().getSupportFragmentManager(), getString(R.string.dialog_success));
                     dismiss();
                 }
 
@@ -76,8 +86,13 @@ public class ConfirmationDialog extends DialogFragment {
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Log.d(TAG, "onFailure: error message: " + t.getMessage());
                     WarningDialog dialog = new WarningDialog();
-                    dialog.show(getParentFragmentManager(), getString(R.string.dialog_warning_submit));
-                    dismiss();
+                    try {
+                        dialog.show(mFragmentManager, getString(R.string.dialog_warning_submit));
+                        dismiss();
+                    }catch (IllegalStateException e){
+                        Log.d(TAG, "onFailure: error ConfirmationDialog not attached to a context");
+                    }
+
 
                 }
             });

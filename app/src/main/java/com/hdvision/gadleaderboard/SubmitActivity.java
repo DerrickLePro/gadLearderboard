@@ -1,6 +1,5 @@
 package com.hdvision.gadleaderboard;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,20 +8,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hdvision.gadleaderboard.model.SubmitBean;
-import com.hdvision.gadleaderboard.repository.datasource.ApiService;
 import com.hdvision.gadleaderboard.utils.ConfirmationDialog;
 import com.hdvision.gadleaderboard.utils.TextValidator;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SubmitActivity extends AppCompatActivity {
 
@@ -40,20 +30,10 @@ public class SubmitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_submit);
 
         Button backButton = findViewById(R.id.btn_back);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        backButton.setOnClickListener(view -> onBackPressed());
 
         Button submitButton = findViewById(R.id.btn_submit);
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                actionSubmit();
-            }
-        });
+        submitButton.setOnClickListener(view -> actionSubmit());
 
         mEdFirstName = findViewById(R.id.editTextFirstName);
         mEdLastName = findViewById(R.id.editTextLastName);
@@ -63,7 +43,7 @@ public class SubmitActivity extends AppCompatActivity {
         mEdLastName.addTextChangedListener(new TextValidator(mEdFirstName) {
             @Override
             public void validate(TextView textView, String text) {
-                if (text.isEmpty()){
+                if (text.isEmpty()) {
                     Toast.makeText(SubmitActivity.this, "Last name required", Toast.LENGTH_LONG).show();
                 }
             }
@@ -72,7 +52,7 @@ public class SubmitActivity extends AppCompatActivity {
         mEdEmail.addTextChangedListener(new TextValidator(mEdFirstName) {
             @Override
             public void validate(TextView textView, String text) {
-                if (text.isEmpty()){
+                if (text.isEmpty()) {
                     Toast.makeText(SubmitActivity.this, "Email required", Toast.LENGTH_LONG).show();
                 }
             }
@@ -81,7 +61,7 @@ public class SubmitActivity extends AppCompatActivity {
         mEdProjectLink.addTextChangedListener(new TextValidator(mEdFirstName) {
             @Override
             public void validate(TextView textView, String text) {
-                if (text.isEmpty()){
+                if (text.isEmpty()) {
                     Toast.makeText(SubmitActivity.this, "Your project link in Github required", Toast.LENGTH_LONG).show();
                 }
             }
@@ -102,14 +82,11 @@ public class SubmitActivity extends AppCompatActivity {
         bean.setProjectLink(projectLink);
 
 
-        ConfirmationDialog dialog = new ConfirmationDialog();
+        ConfirmationDialog dialog = new ConfirmationDialog(getSupportFragmentManager());
         Bundle args = new Bundle();
         args.putParcelable(getString(R.string.field_bean), bean);
         dialog.setArguments(args);
         dialog.show(getSupportFragmentManager(), getString(R.string.dialog_confirm_submit));
-
-
-
 
         Log.d(TAG, bean.toString());
 

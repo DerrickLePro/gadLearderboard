@@ -11,6 +11,9 @@ import androidx.fragment.app.DialogFragment;
 
 import com.hdvision.gadleaderboard.R;
 
+import okhttp3.ResponseBody;
+import retrofit2.Callback;
+
 /**
  * Created by derrick.kaffo on 30/08/2020.
  * kaffoderrick@gmail.com
@@ -18,6 +21,7 @@ import com.hdvision.gadleaderboard.R;
 public class WarningDialog extends DialogFragment {
 
     private static final String TAG = "WarningDialog";
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
