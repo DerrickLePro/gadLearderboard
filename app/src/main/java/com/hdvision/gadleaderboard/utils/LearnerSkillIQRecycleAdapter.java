@@ -36,7 +36,7 @@ public class LearnerSkillIQRecycleAdapter extends RecyclerView.Adapter<LearnerSk
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = mLayoutInflater.inflate(R.layout.list_item, parent, false);
+        View itemView = mLayoutInflater.inflate(R.layout.list_item_skill, parent, false);
         return new ViewHolder(itemView);
     }
 

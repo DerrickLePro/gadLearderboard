@@ -1,7 +1,6 @@
 package com.hdvision.gadleaderboard.ui.main;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.hdvision.gadleaderboard.R;
 import com.hdvision.gadleaderboard.model.Learner;
@@ -31,12 +29,8 @@ public class LeanerSkillHolderFragment extends Fragment {
 
     private LearnerSkillIQViewModel mLearnerViewModel;
 
-    private final static int DATA_FETCHING_INTERVAL = 5 * 1000; //5 seconds
-    private long mLastFetchedDataTimeStamp;
-
     private RecyclerView mRecyclerView;
     private LearnerSkillIQRecycleAdapter mSkillIQAdapter;
-    private SwipeRefreshLayout mRefreshLayout;
 
 
     @Override
@@ -54,20 +48,9 @@ public class LeanerSkillHolderFragment extends Fragment {
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_skill, container, false);
         mRecyclerView = root.findViewById(R.id.list_items2);
-        mRefreshLayout = root.findViewById(R.id.swipeToRefresh2);
 
         Observer<List<Learner>> hoursDataObserver = this::updateData;
         Observer<String> errorObserver = this::setError;
-
-        mRefreshLayout.setOnRefreshListener(() -> {
-            if (System.currentTimeMillis() - mLastFetchedDataTimeStamp < DATA_FETCHING_INTERVAL) {
-                Log.d(TAG, "\tNot fetching from network because interval didn't reach");
-                mRefreshLayout.setRefreshing(false);
-                return;
-            }
-            mLearnerViewModel.fetchData();
-
-        });
 
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
@@ -84,9 +67,7 @@ public class LeanerSkillHolderFragment extends Fragment {
     }
 
     public void updateData(List<Learner> data) {
-        mLastFetchedDataTimeStamp = System.currentTimeMillis();
         mSkillIQAdapter.setItems(data);
-
     }
 
 

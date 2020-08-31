@@ -1,7 +1,6 @@
 package com.hdvision.gadleaderboard.ui.main;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.hdvision.gadleaderboard.R;
 import com.hdvision.gadleaderboard.model.Learner;
@@ -30,12 +28,8 @@ public class LeanerHourHolderFragment extends Fragment {
 
     private LearnerViewModel mLearnerViewModel;
 
-    private final static int DATA_FETCHING_INTERVAL = 5 * 1000; //5 seconds
-    private long mLastFetchedDataTimeStamp;
-
     private RecyclerView mRecyclerView;
     private LearnerRecycleAdapter mAdapter;
-    private SwipeRefreshLayout mRefreshLayout;
 
 
     @Override
@@ -53,21 +47,9 @@ public class LeanerHourHolderFragment extends Fragment {
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
         mRecyclerView = root.findViewById(R.id.list_items);
-        mRefreshLayout = root.findViewById(R.id.swipeToRefresh);
 
         Observer<List<Learner>> hoursDataObserver = this::updateData;
         Observer<String> errorObserver = this::setError;
-
-        mRefreshLayout.setOnRefreshListener(() -> {
-            if (System.currentTimeMillis() - mLastFetchedDataTimeStamp < DATA_FETCHING_INTERVAL) {
-                Log.d(TAG, "\tNot fetching from network because interval didn't reach");
-                mRefreshLayout.setRefreshing(false);
-                return;
-            }
-            mLearnerViewModel.fetchData();
-
-        });
-
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -82,9 +64,7 @@ public class LeanerHourHolderFragment extends Fragment {
     }
 
     public void updateData(List<Learner> data) {
-        mLastFetchedDataTimeStamp = System.currentTimeMillis();
         mAdapter.setItems(data);
-
     }
 
 
