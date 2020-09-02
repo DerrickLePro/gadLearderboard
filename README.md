@@ -7,7 +7,7 @@
 ![Alt text](/screenshot/learning_leader.png?raw=true "Learning")
 
 ### Skill IQ Leaders (Leaderboard)
-![Alt text](/screenshot/skll_iq_leader.png?raw=true "Skill IQ")
+![Alt text](/screenshot/skill_iq_leader.png?raw=true "Skill IQ")
 
 ### Project Submission  (Leaderboard)
 ![Alt text](/screenshot/confirm_submit.png?raw=true "Submission")
