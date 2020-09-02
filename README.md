@@ -2,26 +2,36 @@
 
 ### Launche app (Leaderboard)
 <p align="left">
-  <img src="/screenshot/laucher.png" width="150" heigth="200" alt="Launcher of the application" title="Launcher of the application">
+  <img src="/screenshot/laucher.png" width="170" heigth="200" alt="Launcher of the application" title="Launcher of the application">
 </p>
 
 ### Learning Leaders (Leaderboard)
 <p align="left">
-  <img src="/screenshot/learning_leader.png" width="150" heigth="200" alt="Learning" title="Learning">
+  <img src="/screenshot/learning_leader.png" width="170" heigth="200" alt="Learning" title="Learning">
 </p>
 
 
 ### Skill IQ Leaders (Leaderboard)
-![Alt text](/screenshot/skill_iq_leader.png?v=40&s=200  "Skill IQ")
+<p align="left">
+  <img src="/screenshot/skill_iq_leader.png" width="170" heigth="200" alt="Skill IQ" title="Skill IQ">
+</p>
 
 ### Project Submission  (Leaderboard)
-![Alt text](/screenshot/submit_frame.png?v=40&s=200  "Submission")
+<p align="left">
+  <img src="/screenshot/submit_frame.png" width="170" heigth="200" alt="Submission" title="Submission">
+</p>
 
 ### Confirmation Submission (Leaderboard)
-![Alt text](/screenshot/confirm_submit.png?v=40&s=200  "Confirmation dialog")
+<p align="left">
+  <img src="/screenshot/confirm_submit.png" width="170" heigth="200" alt="Confirmation dialog" title="Confirmation dialog">
+</p>
 
 ### Submission Successful  (Leaderboard)
-![Alt text](/screenshot/successfuly_submit.png?v=40&s=200  "Submission successful")
+<p align="left">
+  <img src="/screenshot/successfuly_submit.png" width="170" heigth="200" alt="Submission successful" title="Submission successful">
+</p>
 
 ### Submission not Successful  (Leaderboard)
-![Alt text](/screenshot/error_submit.png?v=40&s=200  "Error Submission")
+<p align="left">
+  <img src="/screenshot/error_submit.png" width="170" heigth="200" alt="Error Submission" title="Error Submission">
+</p>
