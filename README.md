@@ -10,10 +10,10 @@
 ![Alt text](/screenshot/skill_iq_leader.png?raw=true "Skill IQ")
 
 ### Project Submission  (Leaderboard)
-![Alt text](/screenshot/confirm_submit.png?raw=true "Submission")
+![Alt text](/screenshot/submit_frame.png?raw=true "Submission")
 
 ### Confirmation Submission (Leaderboard)
-![Alt text](/screenshot/error_submit.png?raw=true "Confirmation dialog")
+![Alt text](/screenshot/confirm_submit.png?raw=true "Confirmation dialog")
 
 ### Submission Successful  (Leaderboard)
 ![Alt text](/screenshot/successfuly_submit.png?raw=true "Submission successful")
