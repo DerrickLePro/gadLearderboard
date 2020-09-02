@@ -1,7 +1,9 @@
 # GAD Leaderboard
 
 ### Launche app (Leaderboard)
-![Alt text](/screenshot/laucher.png?v=40&s=200 "Launcher of the application")
+<p align="center">
+  <img src="/screenshot/laucher.png" width="40" heigth="100" alt="Launcher of the application">
+</p>
 
 ### Learning Leaders (Leaderboard)
 ![Alt text](/screenshot/learning_leader.png?v=40&s=200  "Learning")
