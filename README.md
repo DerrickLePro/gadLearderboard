@@ -1,12 +1,15 @@
 # GAD Leaderboard
 
 ### Launche app (Leaderboard)
-<p align="center">
-  <img src="/screenshot/laucher.png" width="40" heigth="100" alt="Launcher of the application">
+<p align="left">
+  <img src="/screenshot/laucher.png" width="150" heigth="200" alt="Launcher of the application" title="Launcher of the application">
 </p>
 
 ### Learning Leaders (Leaderboard)
-![Alt text](/screenshot/learning_leader.png?v=40&s=200  "Learning")
+<p align="left">
+  <img src="/screenshot/learning_leader.png" width="150" heigth="200" alt="Learning" title="Learning">
+</p>
+
 
 ### Skill IQ Leaders (Leaderboard)
 ![Alt text](/screenshot/skill_iq_leader.png?v=40&s=200  "Skill IQ")
