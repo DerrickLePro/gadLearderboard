@@ -1,12 +1,18 @@
 package com.hdvision.gadleaderboard;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.hdvision.gadleaderboard.ui.main.LeanerHourHolderFragment;
 import com.hdvision.gadleaderboard.ui.main.LeanerSkillHolderFragment;
@@ -38,8 +44,36 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow();
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
         initImageLoader();
+//        setAppBarHeight();
     }
+
+    private void setAppBarHeight() {
+        AppBarLayout appBarLayout = findViewById(R.id.appbar);
+        appBarLayout.setLayoutParams(new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStatusBarHeignt() + dpToPx(48 + 56)));
+    }
+
+    private int dpToPx(int dp) {
+        float density = getResources()
+                .getDisplayMetrics()
+                .density;
+
+        return Math.round((float) dp * density);
+    }
+
+    private int getStatusBarHeignt() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0){
+            result = (int) getResources().getDimension(resourceId);
+        }
+        return result;
+    }
+
 
     /**
      * init universal image loader
