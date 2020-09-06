@@ -48,13 +48,6 @@ public class LearnerRecycleAdapter extends RecyclerView.Adapter<LearnerRecycleAd
 
         holder.mTextName.setText(learner.getName());
         holder.mTextDescription.setText(description);
-//        holder.mImageBag.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//            @Override
-//            public void onGlobalLayout() {
-//                holder.mImageBag.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-//
-//            }
-//        });
 
         ImageLoader.getInstance().displayImage(learner.getBadgeUrl(), holder.mImageBag);
 
