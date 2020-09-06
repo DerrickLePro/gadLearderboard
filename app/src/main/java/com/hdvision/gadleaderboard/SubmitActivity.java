@@ -46,33 +46,6 @@ public class SubmitActivity extends AppCompatActivity {
         mEdEmail = findViewById(R.id.editTextEmail);
         mEdProjectLink = findViewById(R.id.editTextProjectLink);
 
-        mEdLastName.addTextChangedListener(new TextValidator(mEdFirstName) {
-            @Override
-            public void validate(TextView textView, String text) {
-                if (text.isEmpty()) {
-                    Toast.makeText(SubmitActivity.this, "Last name required", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        mEdEmail.addTextChangedListener(new TextValidator(mEdFirstName) {
-            @Override
-            public void validate(TextView textView, String text) {
-                if (text.isEmpty()) {
-                    Toast.makeText(SubmitActivity.this, "Email required", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        mEdProjectLink.addTextChangedListener(new TextValidator(mEdFirstName) {
-            @Override
-            public void validate(TextView textView, String text) {
-                if (text.isEmpty()) {
-                    Toast.makeText(SubmitActivity.this, "Your project link in Github required", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow();
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);

@@ -35,6 +35,7 @@ public class ConfirmationDialog extends DialogFragment {
     private SubmitBean mBean;
     private ImageView mClose;
     private FragmentManager mFragmentManager;
+    private NetworkUtils mNetworkUtils;
 
     public ConfirmationDialog(FragmentManager supportFragmentManager) {
         mFragmentManager = supportFragmentManager;
@@ -49,6 +50,7 @@ public class ConfirmationDialog extends DialogFragment {
             Log.d(TAG, "onCreate: submit bean: " + mBean);
         }
 
+        mNetworkUtils = new NetworkUtils(getContext());
     }
 
     @Nullable
@@ -69,36 +71,53 @@ public class ConfirmationDialog extends DialogFragment {
 
             ApiService service = retrofit.create(ApiService.class);
             Log.d(TAG, "onCreateView: " + mBean.toString());
-            //Todo:: for test
-            mBean = new SubmitBean();
-            Call<ResponseBody> call = service.submitProject(mBean.getFirstName(), mBean.getLastName(), mBean.getBusinessEmail(), mBean.getProjectLink());
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    Log.d(TAG, "onResponse: response: " + response.message());
-                    SuccessDialog dialog = new SuccessDialog();
-                    dialog.show(mFragmentManager, getString(R.string.dialog_success));
-                    dismiss();
-                }
 
+            if (mNetworkUtils.isInternetAvailable(1000)) {
+                Log.d(TAG, "isConnected");
+                Call<ResponseBody> call = service.submitProject(mBean.getFirstName(), mBean.getLastName(), mBean.getBusinessEmail(), mBean.getProjectLink());
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Log.d(TAG, "onFailure: error message: " + t.getMessage());
-                    WarningDialog dialog = new WarningDialog();
-                    try {
-                        dialog.show(mFragmentManager, getString(R.string.dialog_warning_submit));
-                        dismiss();
-                    } catch (IllegalStateException e) {
-                        Log.d(TAG, "onFailure: error ConfirmationDialog not attached to a context");
+                        Log.d(TAG, "onResponse: " + (response.body() != null ? response.body().toString() : "null response"));
+                        if (response.isSuccessful()) {
+                            Log.d(TAG, "onResponse: response: " + response.message());
+                            SuccessDialog dialog = new SuccessDialog();
+                            dialog.show(mFragmentManager, getString(R.string.dialog_success));
+                            dismiss();
+
+                        } else {
+                            Log.d(TAG, "onResponse: error submit: " + response.message());
+                            showWarningDialog("WarningDialog: error attached context");
+                        }
                     }
 
 
-                }
-            });
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.d(TAG, "onFailure: error message: " + t.getMessage());
+                        showWarningDialog("onFailure: error ConfirmationDialog not attached to a context");
+                    }
+
+                });
+
+            } else {
+                showWarningDialog("No internet");
+            }
         });
 
         return view;
+    }
+
+    private void showWarningDialog(String message) {
+        Log.d(TAG, message);
+        WarningDialog dialog = new WarningDialog();
+        try {
+            dialog.show(mFragmentManager, getString(R.string.dialog_warning_submit));
+            dismiss();
+        } catch (IllegalStateException e) {
+            Log.d(TAG, e.getMessage());
+        }
     }
 
     @Override
@@ -106,30 +125,4 @@ public class ConfirmationDialog extends DialogFragment {
         super.dismiss();
     }
 
-    /**
-     * Return true if the @param is null
-     *
-     * @param string
-     * @return
-     */
-    private boolean isEmpty(String string) {
-        return string.equals("");
-    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
