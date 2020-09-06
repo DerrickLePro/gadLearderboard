@@ -2,6 +2,7 @@ package com.hdvision.gadleaderboard.ui.main;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,9 +107,25 @@ public class LeanerSkillHolderFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        try {
+            mTaskRefresh.execute();
+        } catch (IllegalStateException e) {
+            Log.d(TAG, e.getMessage());
+        }
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
-        mTaskRefresh.execute();
+
+        try {
+            mTaskRefresh.execute();
+        } catch (IllegalStateException e) {
+            Log.d(TAG, e.getMessage());
+        }
     }
 
     @Override

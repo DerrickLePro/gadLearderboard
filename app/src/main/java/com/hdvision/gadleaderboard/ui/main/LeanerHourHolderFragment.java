@@ -21,7 +21,6 @@ import com.hdvision.gadleaderboard.model.Learner;
 import com.hdvision.gadleaderboard.utils.LearnerRecycleAdapter;
 
 import java.util.List;
-import java.util.concurrent.Executor;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -101,9 +100,26 @@ public class LeanerHourHolderFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        try {
+            mTaskRefresh.execute();
+        } catch (IllegalStateException e) {
+            Log.d(TAG, e.getMessage());
+        }
+    }
+
+
+    @Override
     public void onStart() {
         super.onStart();
-        mTaskRefresh.execute();
+
+        try {
+            mTaskRefresh.execute();
+        } catch (IllegalStateException e) {
+            Log.d(TAG, e.getMessage());
+        }
     }
 
     @Override
