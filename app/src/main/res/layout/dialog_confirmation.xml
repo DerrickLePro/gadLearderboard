@@ -21,8 +21,8 @@
         android:text="@string/text_are_you_sure"
         android:textAlignment="center"
         android:textAppearance="@android:style/TextAppearance.Material.Large"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="14sp" />
+        android:textColor="@color/colorPrimaryDarkLight"
+        android:textSize="15sp" />
 
 
     <Button
@@ -39,6 +39,18 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/shape_confirm"
         android:text="Yes" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:layout_above="@+id/btn_confirm"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="75dp"
+        android:layout_marginBottom="0dp"
+        android:background="#FFFFFF"
+        android:tint="@color/colorPrimaryDarkLight"
+        app:srcCompat="@drawable/ic_question_mark_svgrepo_com" />
 
 
 </RelativeLayout>

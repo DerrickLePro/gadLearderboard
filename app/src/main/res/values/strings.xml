@@ -13,7 +13,7 @@
     <string name="text_last_name">Last Name</string>
     <string name="text_email_address">Email Address</string>
     <string name="text_project_on_github_link">Project on GITHUB (link)</string>
-    <string name="text_are_you_sure">Are you sure?</string>
+    <string name="text_are_you_sure">Are you sure</string>
     <string name="dialog_confirm_submit">ConfirmationSendProjectLingDialog</string>
     <string name="dialog_success">SuccessDialog</string>
     <string name="dialog_warning_submit">WarningSubmitDialog</string>
