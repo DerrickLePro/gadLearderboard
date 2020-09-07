@@ -1,6 +1,6 @@
 # GAD Leaderboard
 
-### Launche app (Leaderboard)
+### Splash screen (Leaderboard)
 <p align="left">
   <img src="/screenshot/laucher.png" width="170" heigth="200" alt="Launcher of the application" title="Launcher of the application">
 </p>
