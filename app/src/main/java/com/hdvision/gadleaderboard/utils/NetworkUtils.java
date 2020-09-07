@@ -53,7 +53,7 @@ public class NetworkUtils {
                 inetAddress = future.get(timeOut, TimeUnit.MILLISECONDS);
                 future.cancel(true);
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                Log.d(TAG, e.getMessage());
+                Log.d(TAG, e.getMessage() == null ? "" : e.getMessage());
             }
 
             return inetAddress != null && !inetAddress.equals("");

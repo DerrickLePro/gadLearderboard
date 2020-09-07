@@ -20,4 +20,5 @@
     <string name="field_bean">bean</string>
     <string name="text_submission_not_successful">Submission not Successful</string>
     <string name="text_submission_successful">Submission Successful</string>
+    <string name="text_yes">Yes</string>
 </resources>

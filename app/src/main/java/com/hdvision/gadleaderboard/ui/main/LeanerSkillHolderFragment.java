@@ -19,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.hdvision.gadleaderboard.R;
 import com.hdvision.gadleaderboard.model.Learner;
 import com.hdvision.gadleaderboard.utils.LearnerSkillIQRecycleAdapter;
+import com.hdvision.gadleaderboard.utils.NetworkUtils;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -41,6 +42,7 @@ public class LeanerSkillHolderFragment extends Fragment {
     private long mLastFetchedDataTimeStamp;
     private Executor mExecutor;
     private AsyncTask<Void, Void, Void> mTaskRefresh;
+    private NetworkUtils mNetworkUtils;
 
 
     @Override
@@ -49,6 +51,8 @@ public class LeanerSkillHolderFragment extends Fragment {
 
         mLearnerViewModel = ViewModelProviders.of(this).get(LearnerSkillIQViewModel.class);
         mLearnerViewModel.fetchData();
+
+        mNetworkUtils = new NetworkUtils(getContext());
 
     }
 
@@ -99,7 +103,11 @@ public class LeanerSkillHolderFragment extends Fragment {
 
 
     public void setError(String msg) {
-        showErrorToast(msg);
+        if (!mNetworkUtils.isInternetAvailable(1000)) {
+            showErrorToast("No Internet");
+        } else {
+            showErrorToast(msg);
+        }
     }
 
     private void showErrorToast(String error) {

@@ -19,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.hdvision.gadleaderboard.R;
 import com.hdvision.gadleaderboard.model.Learner;
 import com.hdvision.gadleaderboard.utils.LearnerRecycleAdapter;
+import com.hdvision.gadleaderboard.utils.NetworkUtils;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class LeanerHourHolderFragment extends Fragment {
     private final static int DATA_FETCHING_INTERVAL = 5 * 1000; //
     private long mLastFetchedDataTimeStamp;
     private AsyncTask<Void, Void, Void> mTaskRefresh;
+    private NetworkUtils mNetworkUtils;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,8 @@ public class LeanerHourHolderFragment extends Fragment {
 
         mLearnerViewModel = ViewModelProviders.of(this).get(LearnerViewModel.class);
         mLearnerViewModel.fetchData();
+
+        mNetworkUtils = new NetworkUtils(getContext());
 
     }
 
@@ -92,7 +96,10 @@ public class LeanerHourHolderFragment extends Fragment {
 
 
     public void setError(String msg) {
-        showErrorToast(msg);
+        if (!mNetworkUtils.isInternetAvailable(1000)) {
+            showErrorToast("Not Internet");
+        } else
+            showErrorToast(msg);
     }
 
     private void showErrorToast(String error) {

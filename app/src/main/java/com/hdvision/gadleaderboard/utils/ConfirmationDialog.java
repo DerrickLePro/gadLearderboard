@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -36,6 +37,7 @@ public class ConfirmationDialog extends DialogFragment {
     private ImageView mClose;
     private FragmentManager mFragmentManager;
     private NetworkUtils mNetworkUtils;
+    private ProgressBar mProgressBar;
 
     public ConfirmationDialog(FragmentManager supportFragmentManager) {
         mFragmentManager = supportFragmentManager;
@@ -59,11 +61,13 @@ public class ConfirmationDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.dialog_confirmation, container, false);
         mConfirm = view.findViewById(R.id.btn_confirm);
         mClose = view.findViewById(R.id.imageView2);
-
+        mProgressBar = view.findViewById(R.id.progress_bar);
+        mProgressBar.setVisibility(View.INVISIBLE);
         mClose.setOnClickListener(view1 -> dismiss());
 
         mConfirm.setOnClickListener(v -> {
 
+                mProgressBar.setVisibility(View.VISIBLE);
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
@@ -81,12 +85,14 @@ public class ConfirmationDialog extends DialogFragment {
 
                         Log.d(TAG, "onResponse: " + (response.body() != null ? response.body().toString() : "null response"));
                         if (response.isSuccessful()) {
+                            mProgressBar.setVisibility(View.INVISIBLE);
                             Log.d(TAG, "onResponse: response: " + response.message());
                             SuccessDialog dialog = new SuccessDialog();
                             dialog.show(mFragmentManager, getString(R.string.dialog_success));
                             dismiss();
 
                         } else {
+                            mProgressBar.setVisibility(View.INVISIBLE);
                             Log.d(TAG, "onResponse: error submit: " + response.message());
                             showWarningDialog("WarningDialog: error attached context");
                         }
@@ -95,6 +101,7 @@ public class ConfirmationDialog extends DialogFragment {
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        mProgressBar.setVisibility(View.INVISIBLE);
                         Log.d(TAG, "onFailure: error message: " + t.getMessage());
                         showWarningDialog("onFailure: error ConfirmationDialog not attached to a context");
                     }
@@ -102,6 +109,7 @@ public class ConfirmationDialog extends DialogFragment {
                 });
 
             } else {
+                mProgressBar.setVisibility(View.INVISIBLE);
                 showWarningDialog("No internet");
             }
         });
